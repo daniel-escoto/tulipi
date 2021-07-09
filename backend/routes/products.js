@@ -5,7 +5,13 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 router.get("/", (req, res) => {
-  Product.find()
+  let filter = {};
+  if (req.query.categories) {
+    filter = { category: req.query.categories.split(",") };
+  }
+
+  Product.find(filter)
+    .populate("category")
     .then((productList) => {
       res.status(200).send(productList);
     })
@@ -125,4 +131,20 @@ router.get("/get/count", (req, res) => {
     }
   });
 });
+
+router.get("/get/featured/:count", (req, res) => {
+  const count = req.params.count ? req.params.count : 0;
+  Product.find({ isFeatured: true })
+    .limit(Number(count))
+    .then((featuredProducts) => {
+      if (featuredProducts) {
+        res.send({
+          featuredProducts: featuredProducts,
+        });
+      } else {
+        res.status(500).json({ success: false });
+      }
+    });
+});
+
 module.exports = router;
