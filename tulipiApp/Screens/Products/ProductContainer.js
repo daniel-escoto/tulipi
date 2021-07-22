@@ -14,24 +14,34 @@ import SearchedProducts from "./SearchedProducts";
 import Banner from "../../Shared/Banner";
 
 const data = require("../../assets/data/products.json");
+const categories = require("../../assets/data/categories.json");
 
 const ProductContainer = () => {
   const [products, setProducts] = useState([]);
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [focus, setFocus] = useState();
   const [search, setSearch] = useState();
+  const [categories, setCategories] = useState([]);
+  const [active, setActive] = useState();
+  const [initialState, setInitialState] = useState([]);
 
   useEffect(() => {
     setProducts(data);
     setProductsFiltered(data);
     setFocus(false);
     setSearch("");
+    setCategories(categories);
+    setActive(-1);
+    setInitialState(data);
 
     return () => {
       setProducts([]);
       setProductsFiltered([]);
       setFocus();
       setSearch();
+      setCategories([]);
+      setActive();
+      setInitialState();
     };
   }, []);
 
@@ -50,6 +60,23 @@ const ProductContainer = () => {
     setFocus(false);
   };
 
+  // const Header = () => {
+  //   return (
+  //     <View>
+  //       <SharedHeader />
+  //       <SearchBar
+  //         placeholder="Search"
+  //         platform="ios"
+  //         onFocus={openList}
+  //         onCancel={onBlur}
+  //         onChangeText={(text) => searchProduct(text)}
+  //         value={search}
+  //         autoFocus={true}
+  //       />
+  //     </View>
+  //   );
+  // };
+
   return (
     <View>
       {focus === true ? (
@@ -62,6 +89,7 @@ const ProductContainer = () => {
             onCancel={onBlur}
             onChangeText={(text) => searchProduct(text)}
             value={search}
+            autoFocus={true}
           />
           <SearchedProducts productsFiltered={productsFiltered} />
         </View>
