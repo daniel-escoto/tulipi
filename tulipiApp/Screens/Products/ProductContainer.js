@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
+  Text,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
   FlatList,
+  Dimensions,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 
@@ -12,9 +14,11 @@ import SharedHeader from "../../Shared/SharedHeader";
 import ProductList from "./ProductList";
 import SearchedProducts from "./SearchedProducts";
 import Banner from "../../Shared/Banner";
+import CategoryFilter from "./CategoryFilter";
 
+const { height } = Dimensions.get("window");
 const data = require("../../assets/data/products.json");
-const categories = require("../../assets/data/categories.json");
+const productCategories = require("../../assets/data/categories.json");
 
 const ProductContainer = () => {
   const [products, setProducts] = useState([]);
@@ -22,6 +26,7 @@ const ProductContainer = () => {
   const [focus, setFocus] = useState();
   const [search, setSearch] = useState();
   const [categories, setCategories] = useState([]);
+  const [productsCtg, setProductsCtg] = useState([]);
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
 
@@ -30,7 +35,8 @@ const ProductContainer = () => {
     setProductsFiltered(data);
     setFocus(false);
     setSearch("");
-    setCategories(categories);
+    setCategories(productCategories);
+    setProductsCtg(data);
     setActive(-1);
     setInitialState(data);
 
@@ -40,6 +46,7 @@ const ProductContainer = () => {
       setFocus();
       setSearch();
       setCategories([]);
+      setProductsCtg([]);
       setActive();
       setInitialState();
     };
@@ -60,22 +67,16 @@ const ProductContainer = () => {
     setFocus(false);
   };
 
-  // const Header = () => {
-  //   return (
-  //     <View>
-  //       <SharedHeader />
-  //       <SearchBar
-  //         placeholder="Search"
-  //         platform="ios"
-  //         onFocus={openList}
-  //         onCancel={onBlur}
-  //         onChangeText={(text) => searchProduct(text)}
-  //         value={search}
-  //         autoFocus={true}
-  //       />
-  //     </View>
-  //   );
-  // };
+  const changeCtg = (ctg) => {
+    {
+      ctg === "all"
+        ? [setProductsCtg(initialState), setActive(true)]
+        : [
+            setProductsCtg(products.filter((i) => i.category.$oid === ctg)),
+            setActive(true),
+          ];
+    }
+  };
 
   return (
     <View>
@@ -109,14 +110,28 @@ const ProductContainer = () => {
                     value={search}
                   />
                   <Banner />
+                  <View>
+                    <CategoryFilter
+                      categories={categories}
+                      CategoryFilter={changeCtg}
+                      productsCtg={productsCtg}
+                      active={active}
+                      setActive={setActive}
+                    />
+                  </View>
                 </View>
               }
-              data={products}
+              data={productsCtg}
               renderItem={({ item }) => (
-                <ProductList key={item.id} item={item} />
+                <ProductList key={item._id.$oid} item={item} />
               )}
               keyExtractor={(item) => item.name}
               numColumns={2}
+              ListEmptyComponent={
+                <View style={[styles.center, { paddingTop: 40 }]}>
+                  <Text>No products found</Text>
+                </View>
+              }
             />
           </View>
         </View>
@@ -128,6 +143,11 @@ const ProductContainer = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "gainsboro",
+    height: "100%",
+  },
+  center: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
