@@ -20,7 +20,7 @@ const { height } = Dimensions.get("window");
 const data = require("../../assets/data/products.json");
 const productCategories = require("../../assets/data/categories.json");
 
-const ProductContainer = () => {
+const ProductContainer = (props) => {
   const [products, setProducts] = useState([]);
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [focus, setFocus] = useState();
@@ -92,7 +92,10 @@ const ProductContainer = () => {
             value={search}
             autoFocus={true}
           />
-          <SearchedProducts productsFiltered={productsFiltered} />
+          <SearchedProducts
+            navigation={props.navigation}
+            productsFiltered={productsFiltered}
+          />
         </View>
       ) : (
         <View style={styles.container}>
@@ -123,7 +126,11 @@ const ProductContainer = () => {
               }
               data={productsCtg}
               renderItem={({ item }) => (
-                <ProductList key={item._id.$oid} item={item} />
+                <ProductList
+                  navigation={props.navigation}
+                  key={item._id.$oid}
+                  item={item}
+                />
               )}
               keyExtractor={(item) => item.name}
               numColumns={2}

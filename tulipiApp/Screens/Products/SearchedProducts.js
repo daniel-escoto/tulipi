@@ -10,7 +10,13 @@ const SearchedProducts = (props) => {
     <View>
       {productsFiltered.length > 0 ? (
         productsFiltered.map((item) => (
-          <ListItem key={item._id.$oid} bottomDivider>
+          <ListItem
+            onPress={() => {
+              props.navigation.navigate("Product Detail", { item: item });
+            }}
+            key={item._id.$oid}
+            bottomDivider
+          >
             <Avatar
               source={{
                 uri: item.image
