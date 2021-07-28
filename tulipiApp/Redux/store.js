@@ -8,6 +8,9 @@ const reducers = combineReducers({
   cartItems: cartItems,
 });
 
-const store = createStore(reducers, composeWithDevTools(thunkMiddleware));
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunkMiddleware))
+);
 
 export default store;

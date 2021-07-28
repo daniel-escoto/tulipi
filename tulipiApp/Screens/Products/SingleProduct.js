@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Image, View, StyleSheet, ScrollView, Button } from "react-native";
 import { Text } from "react-native-elements";
+import { connect } from "react-redux";
+import * as actions from "../../Redux/Actions/cartActions";
 
 import SharedHeader from "../../Shared/SharedHeader";
 
@@ -32,10 +34,23 @@ const SingleProduct = (props) => {
       </ScrollView>
       <View style={styles.bottomContainer}>
         <Text style={styles.price}>${item.price}</Text>
-        <Button style={styles.button} title="Add" />
+        <Button
+          style={styles.button}
+          title="Add"
+          onPress={() => {
+            props.addItemToCart(item);
+          }}
+        />
       </View>
     </View>
   );
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (product) =>
+      dispatch(actions.addToCart({ quantity: 1, product })),
+  };
 };
 
 const styles = StyleSheet.create({
@@ -81,4 +96,4 @@ const styles = StyleSheet.create({
   button: {},
 });
 
-export default SingleProduct;
+export default connect(null, mapDispatchToProps)(SingleProduct);
