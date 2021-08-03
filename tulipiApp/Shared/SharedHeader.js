@@ -29,20 +29,6 @@ const styles = StyleSheet.create({
   header: {
     color: "#eb5814",
   },
-  // header: {
-  //   width: "100%",
-  //   height: "100%",
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   backgroundColor: "white",
-  // },
-  // headerText: {
-  //   fontWeight: "bold",
-  //   fontSize: 20,
-  //   color: "#eb5814",
-  //   letterSpacing: 1,
-  // },
 });
 
 export default SharedHeader;
