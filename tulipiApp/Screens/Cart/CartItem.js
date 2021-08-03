@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Dimensions, View } from "react-native";
-import { Text, ListItem, Avatar } from "react-native-elements";
+import { ListItem, Avatar } from "react-native-elements";
 import cartItems from "../../Redux/Reducers/cartItem";
 
 const { height, width } = Dimensions.get("window");
@@ -10,7 +10,7 @@ const CartItem = (props) => {
   const [quantity, setQuantity] = useState(props.item.quantity);
 
   return (
-    <ListItem key={Math.random()} bottomDivider>
+    <ListItem key={data._id.$oid} bottomDivider>
       <Avatar
         source={{
           uri: data.image

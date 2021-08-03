@@ -15,7 +15,6 @@ const Main = () => {
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        keyboardHidesTabBar: true,
         showLabel: false,
         activeTintColor: "#eb5814",
       }}
