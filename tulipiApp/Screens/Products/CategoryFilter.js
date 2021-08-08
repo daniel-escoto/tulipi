@@ -7,7 +7,7 @@ const CategoryFilter = (props) => {
     <ScrollView
       bounces={true}
       horizontal={true}
-      style={{ backgroundColor: "white", marginHorizontal: 20 }}
+      style={{ backgroundColor: "white" }}
     >
       <ListItem style={{ margin: 0, padding: 0, borderRadius: 0 }}>
         <TouchableOpacity key={1}>
@@ -20,7 +20,7 @@ const CategoryFilter = (props) => {
           />
         </TouchableOpacity>
         {props.categories.map((item) => (
-          <TouchableOpacity key={item._id.$oid}>
+          <TouchableOpacity key={item._id}>
             <Chip
               type={
                 props.active === props.categories.indexOf(item)
@@ -29,7 +29,7 @@ const CategoryFilter = (props) => {
               }
               title={item.name}
               onPress={() => {
-                props.CategoryFilter(item._id.$oid),
+                props.CategoryFilter(item._id),
                   props.setActive(props.categories.indexOf(item));
               }}
             />
