@@ -3,6 +3,7 @@ import { Image, View, StyleSheet, ScrollView, Button } from "react-native";
 import { Text } from "react-native-elements";
 import { connect } from "react-redux";
 import * as actions from "../../Redux/Actions/cartActions";
+import Toast from "react-native-toast-message";
 
 import SharedHeader from "../../Shared/SharedHeader";
 
@@ -39,6 +40,12 @@ const SingleProduct = (props) => {
           title="Add"
           onPress={() => {
             props.addItemToCart(item);
+            Toast.show({
+              topOffset: 60,
+              type: "success",
+              text1: `${item.name} added to Cart`,
+              text2: "Go to your cart to complete your order",
+            });
           }}
         />
       </View>
