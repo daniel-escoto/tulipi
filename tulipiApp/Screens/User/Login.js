@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 
 import FormContainer from "../../Shared/Form/FormContainer";
@@ -7,16 +7,29 @@ import Error from "../../Shared/Error";
 
 import SharedHeader from "../../Shared/SharedHeader";
 
+// Context
+import AuthGlobal from "../../Context/store/AuthGlobal";
+import { loginUser } from "../../Context/actions/Auth.actions";
+
 const Login = (props) => {
+  const context = useContext(AuthGlobal);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (context.stateUser.isAuthenticated === true) {
+      props.navigation.navigate("User Profile");
+    }
+  }, [context.stateUser.isAuthenticated]);
 
   const handleSubmit = () => {
     const user = { email, password };
 
     if (email === "" || password === "") {
       setError("Please fill in your credentials");
+    } else {
+      loginUser(user, context.dispatch);
     }
   };
 
@@ -27,6 +40,7 @@ const Login = (props) => {
         <Input
           placeholder={"Enter Email"}
           name={"email"}
+          keyboardType={"email-address"}
           id={"email"}
           value={email}
           onChangeText={(text) => setEmail(text.toLowerCase())}
